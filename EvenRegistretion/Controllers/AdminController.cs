@@ -85,5 +85,53 @@ namespace EvenRegistretion.Controllers
             ViewBag.EventId = eventId;
             return View(registrations);
         }
+
+        [HttpGet]
+        public IActionResult EditEvent(int eventId)
+        {
+            var isAdmin = HttpContext.Session.GetString("IsAdmin");
+            if (isAdmin != "true")
+            {
+                return RedirectToAction("Login");
+            }
+            var evetItem = DataStore.Events.FirstOrDefault(e => e.Id == eventId);
+            if (evetItem == null) { return NotFound(); }
+            return View(evetItem);
+        }
+
+        [HttpPost]
+        public IActionResult EditEvent(Event updatedEvent)
+        {
+            var isAdmin = HttpContext.Session.GetString("IsAdmin");
+            if (isAdmin != "true")
+            {
+                return RedirectToAction("Login");
+            }
+            var evetItem = DataStore.Events.FirstOrDefault(e => e.Id == updatedEvent.Id);
+            if (evetItem == null) { return NotFound(); }
+            if (ModelState.IsValid)
+            {
+                evetItem.Title = updatedEvent.Title;
+                evetItem.Description = updatedEvent.Description;
+                evetItem.Date = updatedEvent.Date;
+                evetItem.Location = updatedEvent.Location;
+                return RedirectToAction("Index");
+            }
+            return View(updatedEvent);
+        }
+
+        public IActionResult DelEvent(int eventId)
+        {
+            var isAdmin = HttpContext.Session.GetString("IsAdmin");
+            if (isAdmin != "true")
+            {
+                return RedirectToAction("Login");
+            }
+            var evetItem = DataStore.Events.FirstOrDefault(e => e.Id == eventId);
+            if (evetItem == null) { return NotFound(); }
+            DataStore.Events.Remove(evetItem);
+            DataStore.Registrations.RemoveAll(r => r.EventId == eventId);
+            return RedirectToAction("Index");
+        }
     }
 }

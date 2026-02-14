@@ -20,6 +20,7 @@
             <th>Date</th>
             <th>Location</th>
             <th>Дії</th>
+            <th>Адмін-дії</th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +38,20 @@
                        asp-route-eventId="@ev.Id"
                        class="btn btn-success">
                         Зареєструватися
+                    </a>
+                </td>
+                <td>
+                    <a asp-controller="Admin"
+                       asp-action="EditEvent"
+                       asp-route-eventId="@ev.Id"
+                       class="btn btn-warning">
+                        Редагувати
+                    </a>
+                    <a asp-controller="Admin"
+                       asp-action="DelEvent"
+                       asp-route-eventId="@ev.Id"
+                       class="btn btn-danger">
+                        Видалити
                     </a>
                 </td>
             </tr>
