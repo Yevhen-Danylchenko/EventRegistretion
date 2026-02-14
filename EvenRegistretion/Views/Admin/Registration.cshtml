@@ -1,0 +1,26 @@
+﻿@model IEnumerable<RegistrationModel>
+@{
+    ViewData["Title"] = "Зареєстровані учасники";
+}
+
+<h2>Зареєстровані учасники</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Ім’я</th>
+            <th>Email</th>
+            <th>Дата реєстрації</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Name</td>
+                <td>@r.Email</td>
+                <td>@r.RegisteredAt.ToString("dd.MM.yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

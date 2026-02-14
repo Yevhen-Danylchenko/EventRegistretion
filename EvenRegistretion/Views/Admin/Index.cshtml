@@ -1,0 +1,60 @@
+﻿@model IEnumerable<EvenRegistretion.Models.Event>
+
+@{
+    ViewData["Title"] = "Admin - Events";
+}
+
+<h2>Список івентів</h2>
+
+<p>
+    <a asp-action="CreateEvent" class="btn btn-primary">Створити івент</a>
+    <a asp-controller="Admin" asp-action="Logout" class="btn btn-secondary">Вийти</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Location</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+            <tr>
+                <td>@ev.Id</td>
+                <td>@ev.Title</td>
+                <td>@ev.Description</td>
+                <td>@ev.Date.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@ev.Location</td>
+                <td>
+                    <a asp-controller="Event"
+                       asp-action="Register"
+                       asp-route-eventId="@ev.Id"
+                       class="btn btn-success">
+                        Зареєструватися
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@section Scripts
+{
+
+    <script>
+        function copyLink(eventId){
+            var url = window.location.origin + '/Event/Register/' + eventId;
+            navigator.clipboard.writeText(url).then(function(){
+                alert("Лінк скопійовано: " + url);
+            });
+        }
+    </script>
+}
