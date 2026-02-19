@@ -75,12 +75,49 @@ namespace EvenRegistretion.Controllers
             return View("Success");
         }
 
-
-        // Сторінка успіху
-        public IActionResult Success()
+        // GET: список реєстрацій
+        [HttpGet]
+        public IActionResult Registrations(int eventId)
         {
+            var registrations = DataStore.Registrations.Where(r => r.EventId == eventId).ToList();
+            return View(registrations); // @model List<Registration> у Razor
+        }
+
+        // Пошук по email
+        [HttpGet]
+        public IActionResult SearchByEmail(string email)
+        {
+            var registrations = DataStore.Registrations.Where(r => r.Email.Equals(email, StringComparison.OrdinalIgnoreCase)).ToList();
+            return View(registrations); // @model List<Registration> у Razor
+        }
+
+        // POST: пошук по email
+        [HttpPost]
+        public IActionResult SearchByEmail(string email, string action)
+        {
+            if (action == "Search")
+            {
+                var registrations = DataStore.Registrations.Where(r => r.Email.Equals(email, StringComparison.OrdinalIgnoreCase)).ToList();
+                return View(registrations); // @model List<Registration> у Razor
+            }            
             return View();
         }
+
+        // POST: сторінка успіху з реєстраціями
+        [HttpPost]
+        public IActionResult Success(int eventId)
+        {
+            var registrations = DataStore.Registrations
+                .Where(r => r.EventId == eventId)
+                .ToList();
+
+            return View(registrations);
+        }
+        // Сторінка успіху
+        //public IActionResult Success()
+        //{
+        //    return View();
+        //}
     }
 }
 

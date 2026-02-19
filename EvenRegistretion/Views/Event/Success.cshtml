@@ -1,8 +1,31 @@
-﻿@{
-    ViewData["Title"] = "Успішна реєстрація";
+﻿@model IEnumerable<Registration>
+
+@{
+    ViewData["Title"] = "Список зареєстрованих";
 }
 
-<h2>Дякуємо за реєстрацію!</h2>
-<p>Ви успішно зареєстровані на івент.</p>
+<h2>Зареєстровані учасники</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ім'я користувача</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Дата реєстрації</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reg in Model)
+        {
+            <tr>
+                <td>@reg.UserName</td>
+                <td>@reg.Email</td>
+                <td>@reg.Phone</td>
+                <td>@reg.RegisteredAt.ToString("dd.MM.yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Повернутися до списку івентів</a>
