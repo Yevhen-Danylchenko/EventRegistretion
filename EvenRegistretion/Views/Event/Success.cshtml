@@ -13,6 +13,7 @@
             <th>Email</th>
             <th>Телефон</th>
             <th>Дата реєстрації</th>
+            <th>Дії</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,10 @@
                 <td>@reg.Email</td>
                 <td>@reg.Phone</td>
                 <td>@reg.RegisteredAt.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>
+                    <a asp-controller="Event" asp-action="SearchByEmail" asp-route-id="@reg.Id" class="btn btn-primary">Знайти по email</a>
+                    <a asp-controller="Event" asp-action="DeleteRegistration" asp-route-id="@reg.Id" class="btn btn-danger">Видалити</a>
+                </td>
             </tr>
         }
     </tbody>

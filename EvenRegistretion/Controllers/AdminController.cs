@@ -59,6 +59,11 @@ namespace EvenRegistretion.Controllers
                 return RedirectToAction("Login");
             }
 
+            if (newEvent.Date < DateTime.Now)
+            {
+                ModelState.AddModelError("Date", "Дата не може бути в минулому.");
+            }
+
             if (ModelState.IsValid)
             {
                 newEvent.Id = DataStore.GetNextEventId();
@@ -93,9 +98,15 @@ namespace EvenRegistretion.Controllers
             if (isAdmin != "true")
             {
                 return RedirectToAction("Login");
-            }
+            }            
+
             var evetItem = DataStore.Events.FirstOrDefault(e => e.Id == eventId);
             if (evetItem == null) { return NotFound(); }
+
+            if (evetItem.Date < DateTime.Now)
+            {
+                ModelState.AddModelError("Date", "Дата не може бути в минулому.");
+            }
             return View(evetItem);
         }
 
@@ -132,6 +143,32 @@ namespace EvenRegistretion.Controllers
             DataStore.Events.Remove(evetItem);
             DataStore.Registrations.RemoveAll(r => r.EventId == eventId);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult SortByDate(string order = "asc")
+        {
+            var isAdmin = HttpContext.Session.GetString("IsAdmin");
+            if (isAdmin != "true")
+            {
+                return RedirectToAction("Login");
+            }
+
+            List<Event> sortedEvents;
+
+            if (order == "desc")
+            {
+                sortedEvents = DataStore.Events
+                    .OrderByDescending(e => e.Date)
+                    .ToList();
+            }
+            else
+            {
+                sortedEvents = DataStore.Events
+                    .OrderBy(e => e.Date)
+                    .ToList();
+            }
+
+            return View("Index", sortedEvents);
         }
     }
 }

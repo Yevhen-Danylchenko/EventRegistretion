@@ -72,7 +72,8 @@ namespace EvenRegistretion.Controllers
 
             DataStore.Registrations.Add(registration);
 
-            return View("Success");
+            var regs = DataStore.Registrations.Where(r => r.EventId == registration.EventId).ToList();
+            return View("Success", regs);
         }
 
         // GET: список реєстрацій
@@ -104,7 +105,7 @@ namespace EvenRegistretion.Controllers
         }
 
         // POST: сторінка успіху з реєстраціями
-        [HttpPost]
+        [HttpGet]
         public IActionResult Success(int eventId)
         {
             var registrations = DataStore.Registrations
